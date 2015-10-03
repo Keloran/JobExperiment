@@ -1,0 +1,3 @@
+#ifndef NORDICARTS_Game_BUILDNUMBER
+#define NORDICARTS_Game_BUILDNUMBER 28
+#endif
