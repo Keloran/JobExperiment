@@ -39,11 +39,11 @@ list(APPEND LibHeaders ${GP}/Includes.hpp)
 link_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR})
 
-# Seeder
-include_directories(${GP}/Seeder)
-link_directories(${GP}/Seeder)
-list(APPEND LibHeaders ${GP}/Seeder/Seeder.hpp)
-list(APPEND LibSources ${GP}/Seeder/Seeder.cpp)
+# Jobs
+include_directories(${GP}/Jobs)
+link_directories(${GP}/Jobs)
+list(APPEND LibHeaders ${GP}/Jobs/Jobs.hpp)
+list(APPEND LibSources ${GP}/Jobs/Jobs.cpp)
 
 # Game Start
 #include_directories(${GP}/GameStart)

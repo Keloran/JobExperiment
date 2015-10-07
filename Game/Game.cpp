@@ -3,6 +3,9 @@
 #include <NordicEngine/Logger/Logger.hpp>
 #include <NordicEngine/Utility/Seeder.hpp>
 #include <NordicEngine/Time/Time.hpp>
+#include <NordicEngine/Utility/Maths.hpp>
+
+#include <Game/Jobs/Jobs.hpp>
 
 namespace NordicArts {
     namespace Game {
@@ -31,9 +34,13 @@ namespace NordicArts {
                     std::string cSeed = "bobs experiment";    
                     pSeeder->setSeed(cSeed);
 
-                    printIt(pSeeder->getSeed() + (int)pTime->sinceStart());
-                    for (int i = 0; i < 99999; i++) { }
-                    printIt(pSeeder->getSeed() + (int)pTime->sinceStart());
+                    Jobs oJobs(pSeeder->getSeedTime(pTime));
+                    for (int i = 0; i < 5; i++) {
+                        Job sJob = oJobs.getJob(NordicEngine::getRandom(0, 60));
+
+                        printIt(sJob.cJobName + " " + sJob.cParentJob);
+                    }
+
                 } catch (std::exception &oException) {
                     throw NordicEngine::Exception(oException.what());
                 } catch (NordicEngine::Exception &oException) {

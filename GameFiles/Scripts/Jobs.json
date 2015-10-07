@@ -1,0 +1,46 @@
+{
+  "Jobs": [
+    {
+      "name": "BlackSmith",
+      "parentJob": "",
+      "minAge": 21,
+      "maxAge": 60,
+      "maxDistance": 90
+    },
+    {
+      "name": "Apprentice",
+      "parentJob": "BlackSmith",
+      "minAge": 7,
+      "maxAge": 21,
+      "maxDistance": 2
+    },
+    {
+      "name": "Child",
+      "parentJob": "",
+      "minAge": 0,
+      "maxAge": 7,
+      "maxDistance": 0
+    },
+    {
+      "name": "Tanner",
+      "parentJob": "",
+      "minAge": 7,
+      "maxAge": 60,
+      "maxDistance": 30
+    },
+    {
+      "name": "Baker",
+      "parentJob": "",
+      "minAge": 16,
+      "maxAge": 60,
+      "maxDistance": 5
+    },
+    {
+      "name": "Apprentice",
+      "parentJob": "Baker",
+      "minAge": 7,
+      "maxAge": 21,
+      "maxDistance": 2
+    }
+  ]
+}
