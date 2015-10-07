@@ -4,6 +4,7 @@
 #include <NordicEngine/Utility/Seeder.hpp>
 #include <NordicEngine/Time/Time.hpp>
 #include <NordicEngine/Utility/Maths.hpp>
+#include <NordicEngine/String/String.hpp>
 
 #include <Game/Jobs/Jobs.hpp>
 
@@ -31,14 +32,17 @@ namespace NordicArts {
                     NordicEngine::Seeder oSeeder;
                     NordicEngine::Seeder *pSeeder = &oSeeder;
 
-                    std::string cSeed = "bobs experiment";    
+                    std::string cSeed = "bobs experiment";
                     pSeeder->setSeed(cSeed);
 
-                    Jobs oJobs(pSeeder->getSeedTime(pTime));
-                    for (int i = 0; i < 5; i++) {
-                        Job sJob = oJobs.getJob(NordicEngine::getRandom(0, 60));
+                    Jobs oJobs(pSeeder->getSeed());
+                    for (int i = 0; i < 25; i++) {
+//                        int iRand = NordicEngine::getRandom(0, 99, pSeeder->getSeedTime());
+                        int iRand = NordicEngine::getRandom(0, 99);
 
-                        printIt(sJob.cJobName + " " + sJob.cParentJob);
+                        Job sJob = oJobs.getJob(iRand);
+                        std::string cJob = (sJob.cJobName + " " + sJob.cParentJob);
+                        printIt(cJob);
                     }
 
                 } catch (std::exception &oException) {

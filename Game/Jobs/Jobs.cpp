@@ -27,7 +27,11 @@ namespace NordicArts {
             // Get jobs from subset
             unsigned int iRand = NordicEngine::getRandom(0, vJobs.size(), m_iSeed);
             for (size_t i = 0; i != vJobs.size(); i++) {
-                if (i == iRand) {
+                if (vJobs.size() > 1) {
+                    if (i == iRand) {
+                        return vJobs.at(i);
+                    }
+                } else {
                     return vJobs.at(i);
                 }
             }
