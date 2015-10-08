@@ -6,7 +6,7 @@
 #include <NordicEngine/Utility/Maths.hpp>
 #include <NordicEngine/String/String.hpp>
 
-#include <Game/Jobs/Jobs.hpp>
+#include <Game/Generator/Settlements.hpp>
 
 namespace NordicArts {
     namespace Game {
@@ -34,16 +34,17 @@ namespace NordicArts {
 
                     std::string cSeed = "bobs experiment";
                     pSeeder->setSeed(cSeed);
+                    int iSeed = pSeeder->getSeed();
 
-                    Jobs oJobs(pSeeder->getSeed());
-                    for (int i = 0; i < 25; i++) {
-//                        int iRand = NordicEngine::getRandom(0, 99, pSeeder->getSeedTime());
-                        int iRand = NordicEngine::getRandom(0, 99);
-
-                        Job sJob = oJobs.getJob(iRand);
-                        std::string cJob = (sJob.cJobName + " " + sJob.cParentJob);
-                        printIt(cJob);
-                    }
+                    Generators::Settlements oSettlements;
+                    oSettlements.setSize(3);
+                    oSettlements.setSeed(iSeed);
+                    printIt("Before Generate Settlements");
+//                    printIt(iSeed);
+                    oSettlements.generate();
+                    
+                    std::vector<Generators::Settlement> vSettlements = oSettlements.getSettlements();
+                    printIt(vSettlements.size());
 
                 } catch (std::exception &oException) {
                     throw NordicEngine::Exception(oException.what());

@@ -39,11 +39,18 @@ list(APPEND LibHeaders ${GP}/Includes.hpp)
 link_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR})
 
+# Generator
+include_directories(${GP}/Generator)
+link_directories(${GP}/Generator)
+list(APPEND LibHeaders ${GP}/Generator/Generator.hpp)
+
 # Jobs
-include_directories(${GP}/Jobs)
-link_directories(${GP}/Jobs)
-list(APPEND LibHeaders ${GP}/Jobs/Jobs.hpp)
-list(APPEND LibSources ${GP}/Jobs/Jobs.cpp)
+list(APPEND LibHeaders ${GP}/Generator/Jobs.hpp)
+list(APPEND LibSources ${GP}/Generator/Jobs.cpp)
+
+# Settlement
+list(APPEND LibHeaders ${GP}/Generator/Settlements.hpp)
+list(APPEND LibSources ${GP}/Generator/Settlements.cpp)
 
 # Game Start
 #include_directories(${GP}/GameStart)
