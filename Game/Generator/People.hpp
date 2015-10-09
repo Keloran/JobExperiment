@@ -3,8 +3,6 @@
 
 #include <Game/Includes.hpp>
 
-#include <NordicEngine/Utility/Maths.hpp>
-
 namespace NordicArts {
     namespace Game {
         namespace Generators {
@@ -31,11 +29,21 @@ namespace NordicArts {
             public:
             protected:
             private:
+                int m_iSeed;
+                int m_iPeople;
+
+                std::vector<std::string> m_vNames;
 
             // Methods
             public:
-                People();
+                People(int iPeople, int iSeed);
                 ~People();
+
+                Person getPerson();
+                
+                std::vector<Person> getPeople();                
+
+                void generate();
 
             protected:
             private:
