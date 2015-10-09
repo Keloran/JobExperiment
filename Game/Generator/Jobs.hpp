@@ -2,7 +2,6 @@
 #define NordicArts_Game_Generators_Jobs_H
 
 #include <Game/Includes.hpp>
-#include <Game/Generator/Generator.hpp>
 
 namespace NordicArts {
     namespace Game {
@@ -16,22 +15,25 @@ namespace NordicArts {
                 std::string cParentJob;
             };
 
-            class Jobs : public Generator {
+            class Jobs {
             // Variables
             public:
             protected:
             private:
                 int m_iSeed;
+                int m_iPeople;
 
                 std::vector<Job> m_vJobs;
 
             // Methods
             public:
-                Jobs();
+                Jobs(int iPeople, int iSeed);
                 ~Jobs();
 
                 Job getDefault();
                 Job getJob(int iAge);
+
+                std::vector<Job> getJobs();
         
                 void generate();
 

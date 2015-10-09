@@ -8,7 +8,7 @@
 namespace NordicArts {
     namespace Game {
         namespace Generators {
-            Jobs::Jobs() {
+            Jobs::Jobs(int iPeople, int iSeed) : m_iPeople(iPeople), m_iSeed(iSeed) {
             }
     
             Jobs::~Jobs() {
@@ -25,10 +25,17 @@ namespace NordicArts {
                 return sJob;
             }
 
-            Job Jobs::getJob(int iAge) {
-                printIt("getJob");
+            std::vector<Job> Jobs::getJobs() {
+                std::vector<Job> vJobs;
+                for (int i = 0; i < m_iPeople; i++) {
+                    int iAge = NordicEngine::getRandom(0, 99, m_iSeed);
+                    vJobs.push_back(getJob(iAge));
+                }
 
-                // Get the jobs within age
+                return vJobs;
+            }
+
+            Job Jobs::getJob(int iAge) {
                 std::vector<Job> vJobs;
                 for (size_t i = 0; i != m_vJobs.size(); i++) {
                     if (m_vJobs.at(i).iMaxAge < iAge) { continue; }
@@ -38,31 +45,22 @@ namespace NordicArts {
                 }
 
                 // Get jobs from subset
-                printIt("Before Narrow Jobs");
-                printIt(vJobs.size());
-                printIt(m_iSeed);
                 unsigned int iRand = NordicEngine::getRandom(0, vJobs.size(), m_iSeed);
-                printIt(iRand);
                 for (size_t i = 0; i != vJobs.size(); i++) {
                     if (i == iRand) {
                         return vJobs.at(i);
                     }
                 }
 
-                printIt("getDefault Jobs");    
                 return getDefault();
             }
 
             void Jobs::generate() {
-                printIt("Generate Jobs");
-
                 // Parse the JSON
                 NordicEngine::Files::TextFile::Reader oFile("GameFiles/Scripts/Jobs.json");
                 jsonxx::Object oJSON;
                 oJSON.parse(oFile.read());
 
-                int iSize = 0;
-    
                 jsonxx::Array aJobs = oJSON.get<jsonxx::Array>("Jobs");
     
                 for (size_t i = 0; i != aJobs.size(); i++) {
@@ -75,10 +73,6 @@ namespace NordicArts {
                     sJob.cJobName       = aJobs.get<jsonxx::Object>(i).get<jsonxx::String>("name");
 
                     m_vJobs.push_back(sJob);
-
-                    // Generate the list based on the size
-                    iSize++;
-                    if (iSize == m_iSize) { break; }
                 }
             }
         };

@@ -2,7 +2,6 @@
 #define NordicArts_Game_Generators_Settlements_H
 
 #include <Game/Includes.hpp>
-#include <Game/Generator/Generator.hpp>
 #include <Game/Generator/Jobs.hpp>
 
 namespace NordicArts {
@@ -19,17 +18,19 @@ namespace NordicArts {
                 std::vector<Job> vJobs;
             };
 
-            class Settlements : public Generator {
+            class Settlements {
             // Variables
             public:
                 std::vector<Settlement> m_vSettlements;
 
             protected:
             private:
+                int m_iSeed;
+                int m_iSize;
 
             // Methods
             public:
-                Settlements();
+                Settlements(int iSize, int iSeed);
                 ~Settlements();
 
                 Settlement getSettlement();
