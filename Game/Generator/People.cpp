@@ -3,6 +3,7 @@
 
 #include <NordicEngine/Utility/Maths.hpp>
 #include <NordicEngine/ThirdParty/jsonxx/jsonxx.h>
+#include <NordicEngine/NordicEngine/Files/Format/TextFile/Reader.hpp>
 
 namespace NordicArts {
     namespace Game {
@@ -34,10 +35,10 @@ namespace NordicArts {
                 jsonxx::Object oJSON;
                 oJSON.parse(oFile.read());
                 
-                jsonxx:Array aNames = oJSON.get<jsonxx::Array>("Names");
+                jsonxx::Array aNames = oJSON.get<jsonxx::Array>("Names");
                 for (size_t i = 0; i != aNames.size(); i++) {
-                    std::string cName = aNames.get<jsonxx::Object(i).get<jsonxx::String>("name");
-                    if (
+                    std::string cName = aNames.get<jsonxx::Object>(i).get<jsonxx::String>("name");
+                    
                 }
             }
         };
