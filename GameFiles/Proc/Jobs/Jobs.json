@@ -5,91 +5,117 @@
             "parentJob": "",
             "minAge": 16,
             "maxAge": 98,
-            "maxDistance": 99
+            "maxDistance": 99,
+            "houseNeeded": false,
+            "shopNeeded": false
         },
         {
             "name": "Orphan",
             "parentJob": "Begger",
             "minAge": 4,
             "maxAge": 16,
-            "maxDistance": 10
+            "maxDistance": 10,
+            "houseNeeded": false,
+            "shopNeeded": false,
         },
         {
             "name": "BlackSmith",
             "parentJob": "",
             "minAge": 21,
             "maxAge": 60,
-            "maxDistance": 90
+            "maxDistance": 90,
+            "houseNeeded": true,
+            "shopNeeded": true
         },
         {
             "name": "Apprentice",
             "parentJob": "BlackSmith",
             "minAge": 7,
             "maxAge": 21,
-            "maxDistance": 2
+            "maxDistance": 2,
+            "houseNeeded": true,
+            "shopNeeded": false
         },
         {
             "name": "Child",
             "parentJob": "",
             "minAge": 0,
             "maxAge": 7,
-            "maxDistance": 0
+            "maxDistance": 0,
+            "houseNeeded": true,
+            "shopNeeded": false
         },
         {
             "name": "Student",
             "parentJob": "",
             "minAge": 7,
             "maxAge": 21,
-            "maxDistance": 5
+            "maxDistance": 5,
+            "houseNeeded": true,
+            "shopNeeded": false
         },
         {
             "name": "Teacher",
             "parentJob": "",
             "minAge": 21,
             "maxAge": 60,
-            "maxDistance": 1
+            "maxDistance": 1,
+            "houseNeeded": true,
+            "shopNeeded": true
         },
         {
             "name": "Tanner",
             "parentJob": "",
             "minAge": 7,
             "maxAge": 60,
-            "maxDistance": 30
+            "maxDistance": 30,
+            "houseNeeded": true,
+            "shopNeeded": true
         },
         {
             "name": "Baker",
             "parentJob": "",
             "minAge": 16,
             "maxAge": 60,
-            "maxDistance": 5
+            "maxDistance": 5,
+            "houseNeeded": true,
+            "shopNeeded": true
         },
         {
             "name": "Apprentice",
             "parentJob": "Baker",
             "minAge": 7,
             "maxAge": 21,
-            "maxDistance": 2
+            "maxDistance": 2,
+            "houseNeeded": true,
+            "shopNeeded": false
         },
         {
             "name": "WeaponSmith",
             "parentJob": "",
             "minAge": 21,
             "maxAge": 60,
-            "maxDistance": 90
+            "maxDistance": 90,
+            "houseNeeded": true,
+            "shopNeeded": true
         },
         {
             "name": "Apprentice",
             "parentJob": "BlackSmith",
             "minAge": 7,
             "maxAge": 21,
-            "maxDistance": 2
+            "maxDistance": 2,
+            "houseNeeded": true,
+            "shopNeeded": false
         },
         {
             "name": "Elder",
             "parentJob": "",
             "minAge": 60,
             "maxAge": 99,
-            "maxDistance": 0
+            "maxDistance": 0,
+            "houseNeeded": true,
+            "shopNeeded": false
         }
     ]
 }

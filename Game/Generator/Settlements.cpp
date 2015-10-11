@@ -16,9 +16,8 @@ namespace NordicArts {
                 for (int i = 0; i != m_iSize; i++) {
                     Settlement sSettlement = getSettlement();
 
-                    Jobs oJobs(sSettlement.iPeople, m_iSeed);
-                    oJobs.generate();
-                    sSettlement.vJobs = oJobs.getJobs();
+                    People oPeople(sSettlement.iPeople, sSettlement.iHouses, m_iSeed);
+                    sSettlement.vPeople = oPeople.getPeople();
 
                     m_vSettlements.push_back(sSettlement);
                 }
@@ -29,22 +28,15 @@ namespace NordicArts {
             }
 
             Settlement Settlements::getDefault() {
-                Jobs oJobs(14, m_iSeed);
-                oJobs.generate();
-
-                std::vector<Job> vJobs;
-                for (int i = 0; i != 14; i++) {
-                    int iAge = NordicEngine::getRandom(0, 99, m_iSeed);
-                    vJobs.push_back(oJobs.getJob(iAge));
-                }
-
                 Settlement sSettlement;
-                sSettlement.iSize   = 3;
-                sSettlement.iHouses = 10;
-                sSettlement.iShops  = 6;
-                sSettlement.iPeople = 14;
-                sSettlement.cName   = "Defaultious";
-                sSettlement.vJobs   = vJobs;
+                sSettlement.iSize       = 3;
+                sSettlement.iHouses     = 10;
+                sSettlement.iShops      = 6;
+                sSettlement.iPeople     = 14;
+                sSettlement.cName       = "Defaultious";
+
+                People oPeople(14, 10, m_iSeed);
+                sSettlement.vPeople     = oPeople.getPeople();
 
                 return sSettlement;
             }

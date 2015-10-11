@@ -13,6 +13,9 @@ namespace NordicArts {
 
                 std::string cJobName;
                 std::string cParentJob;
+
+                bool bNeedsHouse;
+                bool bNeedsShop;
             };
 
             class Jobs {
@@ -21,7 +24,7 @@ namespace NordicArts {
             protected:
             private:
                 int m_iSeed;
-                int m_iPeople;
+                int m_iAge;
 
                 std::vector<Job> m_vJobs;
 
@@ -31,9 +34,7 @@ namespace NordicArts {
                 ~Jobs();
 
                 Job getDefault();
-                Job getJob(int iAge);
-
-                std::vector<Job> getJobs();
+                Job getJob();
         
                 void generate();
 

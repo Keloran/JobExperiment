@@ -1,44 +1,80 @@
 #include <Game/Generator/People.hpp>
-#include <Game/Generator/Jobs.hpp>
 
 #include <NordicEngine/Utility/Maths.hpp>
-#include <NordicEngine/ThirdParty/jsonxx/jsonxx.h>
 #include <NordicEngine/NordicEngine/Files/Format/TextFile/Reader.hpp>
+#include <NordicEngine/NordicEngine/Utility/Markov.hpp>
 
 namespace NordicArts {
     namespace Game {
         namespace Generators {
-            People::People(int iPeople, int iSeed) : m_iPeople(iPeople), m_iSeed(iSeed) {
+            People::People(int iPeople, int iHouses, int iSeed) : m_iPeople(iPeople), m_iHouses(iHouses), m_iSeed(iSeed) {
             }
 
             People::~People() {
             }
 
-            Person People::getPerson() {
-                int iAge = NordicEngine::getRandom(0, 99, m_iSeed);
+            Person People::getPerson(std::string cLastName, std::string cFirstName) {
+                int iAge    = NordicEngine::getRandom(0, 99, m_iSeed);
+                int iMaxAge = NordicEngine::getRandom((iAge + 1), 99, m_iSeed);
+                int iSex    = NordicEngine::getRandom(0, 1, m_iSeed);
+
+                bool bMale = false;
+                if (iSex == 1) { bMale = true; }
+
                 Person sPerson;
+
+                sPerson.cFirstName  = cFirstName;
+                sPerson.cLastName   = cLastName;
+                sPerson.iAge        = iAge;
+                sPerson.iMaxAge     = iMaxAge;
+                sPerson.bMale       = bMale;
+
+                Jobs oJob(iAge, m_iSeed);
+                oJob.generate();
+
+                sPerson.sJob    = oJob.getJob();
 
                 return sPerson;
             }
 
             std::vector<Person> People::getPeople() {
-                std::vector<Person> vPeople;
+                generate();
 
-                return vPeople;
+                return m_vPeople;
             }
 
             void People::generate() {
-                std::vector<std::string> vFirstNames;
-                std::vector<std::string> vLastNames;
+                NordicEngine::Markov oMarkov;
+                oMarkov.setNamesList("GameFiles/Proc/Names/names-list");
 
-                NordicEngine::Files::TextFile::Reader oFile("GameFiles/Scripts/Names.json");
-                jsonxx::Object oJSON;
-                oJSON.parse(oFile.read());
-                
-                jsonxx::Array aNames = oJSON.get<jsonxx::Array>("Names");
-                for (size_t i = 0; i != aNames.size(); i++) {
-                    std::string cName = aNames.get<jsonxx::Object>(i).get<jsonxx::String>("name");
-                    
+                // Generate the list of chances
+                oMarkov.generate();
+
+                // create familys
+                int iFamilys    = NordicEngine::getRandom(m_iPeople, m_iHouses, m_iSeed);
+                int iFamilySize = NordicEngine::getRandom(m_iPeople, iFamilys, m_iSeed);
+                for (int i = 0; i != iFamilys; i++) {
+                    std::string cLastName = oMarkov.generateWord(m_iSeed);
+
+
+                    for (int j = 0; j != iFamilySize; j++) {
+                        Person sPerson      = getPerson(cLastName, oMarkov.generateWord());
+                        printIt(sPerson.cFirstName + " " + sPerson.cLastName);
+                        printIt(sPerson.sJob.cJobName + " " + sPerson.sJob.cParentJob);
+
+                        m_vPeople.push_back(sPerson);
+                    }
+                }
+
+                // People not in a family
+                int iRemainder = (m_iPeople - (iFamilySize + iFamilys));
+                for (int i = 0; i != iRemainder; i++) {
+                    Person sPerson      = getPerson(oMarkov.generateWord(), oMarkov.generateWord());
+
+                    printIt(sPerson.cFirstName + " " + sPerson.cLastName);
+                    printIt(sPerson.sJob.cJobName + " " + sPerson.sJob.cParentJob);
+
+                    m_vPeople.push_back(sPerson);
                 }
             }
         };

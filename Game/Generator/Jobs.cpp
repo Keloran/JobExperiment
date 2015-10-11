@@ -8,7 +8,7 @@
 namespace NordicArts {
     namespace Game {
         namespace Generators {
-            Jobs::Jobs(int iPeople, int iSeed) : m_iPeople(iPeople), m_iSeed(iSeed) {
+            Jobs::Jobs(int iAge, int iSeed) : m_iAge(iAge), m_iSeed(iSeed) {
             }
     
             Jobs::~Jobs() {
@@ -25,21 +25,11 @@ namespace NordicArts {
                 return sJob;
             }
 
-            std::vector<Job> Jobs::getJobs() {
-                std::vector<Job> vJobs;
-                for (int i = 0; i < m_iPeople; i++) {
-                    int iAge = NordicEngine::getRandom(0, 99, m_iSeed);
-                    vJobs.push_back(getJob(iAge));
-                }
-
-                return vJobs;
-            }
-
-            Job Jobs::getJob(int iAge) {
+            Job Jobs::getJob() {
                 std::vector<Job> vJobs;
                 for (size_t i = 0; i != m_vJobs.size(); i++) {
-                    if (m_vJobs.at(i).iMaxAge < iAge) { continue; }
-                    if (m_vJobs.at(i).iMinAge > iAge) { continue; }
+                    if (m_vJobs.at(i).iMaxAge < m_iAge) { continue; }
+                    if (m_vJobs.at(i).iMinAge > m_iAge) { continue; }
     
                     vJobs.push_back(m_vJobs.at(i));
                 }
@@ -57,7 +47,7 @@ namespace NordicArts {
 
             void Jobs::generate() {
                 // Parse the JSON
-                NordicEngine::Files::TextFile::Reader oFile("GameFiles/Scripts/Jobs.json");
+                NordicEngine::Files::TextFile::Reader oFile("GameFiles/Proc/Jobs/Jobs.json");
                 jsonxx::Object oJSON;
                 oJSON.parse(oFile.read());
 
@@ -71,6 +61,8 @@ namespace NordicArts {
                     sJob.iMaxDistance   = aJobs.get<jsonxx::Object>(i).get<jsonxx::Number>("maxDistance");
                     sJob.cParentJob     = aJobs.get<jsonxx::Object>(i).get<jsonxx::String>("parentJob");
                     sJob.cJobName       = aJobs.get<jsonxx::Object>(i).get<jsonxx::String>("name");
+                    sJob.bNeedsHouse    = aJobs.get<jsonxx::Object>(i).get<jsonxx::Boolean>("needsHouse");
+                    sJob.bNeedsShop     = aJobs.get<jsonxx::Object>(i).get<jsonxx::Boolean>("needsShop");
 
                     m_vJobs.push_back(sJob);
                 }

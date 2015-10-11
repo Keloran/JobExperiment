@@ -3,6 +3,7 @@
 
 #include <Game/Includes.hpp>
 #include <Game/Generator/Jobs.hpp>
+#include <Game/Generator/People.hpp>
 
 namespace NordicArts {
     namespace Game {
@@ -15,7 +16,7 @@ namespace NordicArts {
                 int iShops;
                 int iPeople;
                 
-                std::vector<Job> vJobs;
+                std::vector<Person> vPeople;
             };
 
             class Settlements {

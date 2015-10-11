@@ -2,6 +2,7 @@
 #define NordicArts_Game_Generators_People_H
 
 #include <Game/Includes.hpp>
+#include <Jobs.hpp>
 
 namespace NordicArts {
     namespace Game {
@@ -14,14 +15,16 @@ namespace NordicArts {
                 // Linkers
                 int iBornSettlement;
                 int iParent;
-                int iJob;
+
 
                 // Male or Female
                 bool bMale;
                 
                 // Name
                 std::string cFirstName;
-                std::string cLastName;                
+                std::string cLastName;
+
+                Job sJob;
             };
 
             class People {
@@ -31,15 +34,17 @@ namespace NordicArts {
             private:
                 int m_iSeed;
                 int m_iPeople;
+                int m_iHouses;
 
                 std::vector<std::string> m_vNames;
+                std::vector<Person> m_vPeople;
 
             // Methods
             public:
-                People(int iPeople, int iSeed);
+                People(int iPeople, int iHouses, int iSeed);
                 ~People();
 
-                Person getPerson();
+                Person getPerson(std::string cLastName, std::string cFirstName);
                 
                 std::vector<Person> getPeople();                
 
