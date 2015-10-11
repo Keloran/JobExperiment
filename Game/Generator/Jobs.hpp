@@ -14,8 +14,8 @@ namespace NordicArts {
                 std::string cJobName;
                 std::string cParentJob;
 
-                bool bNeedsHouse;
-                bool bNeedsShop;
+                bool bHouseNeeded;
+                bool bShopNeeded;
             };
 
             class Jobs {

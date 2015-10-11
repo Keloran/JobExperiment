@@ -7,6 +7,7 @@
 #include <NordicEngine/String/String.hpp>
 
 #include <Game/Generator/Settlements.hpp>
+#include <NordicEngine/NordicEngine/Utility/NameGen.hpp>
 
 namespace NordicArts {
     namespace Game {
@@ -35,6 +36,12 @@ namespace NordicArts {
                     std::string cSeed = "bobs experiment";
                     pSeeder->setSeed(cSeed);
                     int iSeed = pSeeder->getSeed();
+
+                    NordicEngine::NameGen oNameGen(iSeed);
+                    oNameGen.generateLists();
+                    int iRandLength = NordicEngine::getRandom(3, 6, iSeed);
+                    printIt(iRandLength);
+                    printIt(oNameGen.generateName(iRandLength));
 
                     Generators::Settlements oSettlements(3, iSeed);
                     oSettlements.generate();

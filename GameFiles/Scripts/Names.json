@@ -1,0 +1,30 @@
+/*
+    sexOnly:
+        0 = any
+        1 = male
+        2 = female
+*/
+{
+    "Names": [
+        {
+            "isFirstName": true,
+            "name": "Bob",
+            "sexOnly": 1
+        },
+        {
+            "isFirstName": false,
+            "name": "Bobbington",
+            "sexOnly": 0
+        },
+        {
+            "isFirstName": true,
+            "name": "Jean",
+            "sexOnly": 0
+        },
+        {
+            "isFirstName": true,
+            "name": "Mary",
+            "sexOnly": 2
+        }
+    ]
+}

@@ -61,8 +61,8 @@ namespace NordicArts {
                     sJob.iMaxDistance   = aJobs.get<jsonxx::Object>(i).get<jsonxx::Number>("maxDistance");
                     sJob.cParentJob     = aJobs.get<jsonxx::Object>(i).get<jsonxx::String>("parentJob");
                     sJob.cJobName       = aJobs.get<jsonxx::Object>(i).get<jsonxx::String>("name");
-                    sJob.bNeedsHouse    = aJobs.get<jsonxx::Object>(i).get<jsonxx::Boolean>("needsHouse");
-                    sJob.bNeedsShop     = aJobs.get<jsonxx::Object>(i).get<jsonxx::Boolean>("needsShop");
+                    sJob.bHouseNeeded   = aJobs.get<jsonxx::Object>(i).get<jsonxx::Boolean>("houseNeeded");
+                    sJob.bShopNeeded    = aJobs.get<jsonxx::Object>(i).get<jsonxx::Boolean>("shopNeeded");
 
                     m_vJobs.push_back(sJob);
                 }
