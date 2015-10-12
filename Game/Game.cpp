@@ -39,9 +39,12 @@ namespace NordicArts {
 
                     NordicEngine::NameGen oNameGen(iSeed);
                     oNameGen.generateLists();
-                    int iRandLength = NordicEngine::getRandom(3, 6, iSeed);
-                    printIt(iRandLength);
-                    printIt(oNameGen.generateName(iRandLength));
+
+                    int iLength = NordicEngine::getRandom(3, 6, iSeed);
+                    printIt(oNameGen.generateName(iLength));
+
+                    iLength = NordicEngine::getRandom(3, 6, iSeed);
+                    printIt(oNameGen.generateName(iLength));
 
                     Generators::Settlements oSettlements(3, iSeed);
                     oSettlements.generate();

@@ -45,20 +45,19 @@ namespace NordicArts {
                 int iSize, iPeople;
 
                 Settlement sSettlement;
-                
                 iSize = NordicEngine::getRandom(1, 37, m_iSeed);
-                if (iSize == 0) { return getDefault(); }
+                if (iSize == 1) { return getDefault(); }
                 sSettlement.iSize = iSize;
 
                 if (iSize > 3 && iSize < 10) {
                     iPeople = NordicEngine::getRandom(36, 80, m_iSeed);
-    
+
                     sSettlement.iHouses = NordicEngine::getRandom(iPeople, (iPeople - iSize), m_iSeed);
                     sSettlement.iShops  = NordicEngine::getRandom(iPeople, (iPeople - (iSize - 5)), m_iSeed);
                     sSettlement.cName   = ("town_" + NordicEngine::getString(iSize));
                 } else if (iSize > 10) {
                     iPeople = NordicEngine::getRandom(65, 180, m_iSeed);
-                        
+
                     sSettlement.iHouses = NordicEngine::getRandom(iPeople, (iPeople - iSize), m_iSeed);
                     sSettlement.iShops  = NordicEngine::getRandom(iPeople, (iPeople - (iSize - 20)), m_iSeed);
                     sSettlement.cName   = ("city_" + NordicEngine::getString(iSize));

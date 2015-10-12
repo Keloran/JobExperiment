@@ -1,8 +1,9 @@
 #include <Game/Generator/People.hpp>
 
 #include <NordicEngine/Utility/Maths.hpp>
-#include <NordicEngine/NordicEngine/Files/Format/TextFile/Reader.hpp>
-#include <NordicEngine/NordicEngine/Utility/Markov.hpp>
+#include <NordicEngine/Files/Format/TextFile/Reader.hpp>
+#include <NordicEngine/Utility/Markov.hpp>
+#include <NordicEngine/String/String.hpp>
 
 namespace NordicArts {
     namespace Game {
@@ -15,7 +16,12 @@ namespace NordicArts {
 
             Person People::getPerson(std::string cLastName, std::string cFirstName) {
                 int iAge    = NordicEngine::getRandom(0, 99, m_iSeed);
-                int iMaxAge = NordicEngine::getRandom((iAge + 1), 99, m_iSeed);
+                int iMaxAge;
+                if (iAge == 99 || iAge == 98) {
+                    iMaxAge = 99;
+                } else {
+                    iMaxAge = NordicEngine::getRandom((iAge + 1), 99, m_iSeed);
+                }
                 int iSex    = NordicEngine::getRandom(0, 1, m_iSeed);
 
                 bool bMale = false;
@@ -56,12 +62,8 @@ namespace NordicArts {
                 for (int i = 0; i != iFamilys; i++) {
                     std::string cLastName = oMarkov.generateWord(m_iSeed);
 
-
                     for (int j = 0; j != iFamilySize; j++) {
                         Person sPerson      = getPerson(cLastName, oMarkov.generateWord());
-                        printIt(sPerson.cFirstName + " " + sPerson.cLastName);
-                        printIt(sPerson.sJob.cJobName + " " + sPerson.sJob.cParentJob);
-
                         m_vPeople.push_back(sPerson);
                     }
                 }

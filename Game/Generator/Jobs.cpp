@@ -2,8 +2,8 @@
 
 #include <NordicEngine/String/String.hpp>
 #include <NordicEngine/Utility/Maths.hpp>
-#include <NordicEngine/NordicEngine/Files/Format/TextFile/Reader.hpp>
-#include <NordicEngine/NordicEngine/ThirdParty/jsonxx/jsonxx.h>
+#include <NordicEngine/Files/Format/TextFile/Reader.hpp>
+#include <NordicEngine/ThirdParty/jsonxx/jsonxx.h>
 
 namespace NordicArts {
     namespace Game {
