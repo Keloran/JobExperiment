@@ -14,8 +14,6 @@ namespace NordicArts {
             }
 
             void Settlements::generate() {
-                std::cout << "S" << std::flush;
-
                 for (int i = 0; i != m_iSize; i++) {
                     Settlement sSettlement = getSettlement();
 

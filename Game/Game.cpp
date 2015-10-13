@@ -36,16 +36,12 @@ namespace NordicArts {
                     pSeeder->setSeed(cSeed);
                     int iSeed = pSeeder->getSeed();
 
-                    std::cout << "Progress: " << std::flush;
-
                     Generators::Settlements oSettlements(3, iSeed);
                     oSettlements.generate();
                     
                     std::vector<Generators::Settlement> vSettlements = oSettlements.getSettlements();
                     int iSettlements, iPeople, iHomeless;
                     iSettlements = vSettlements.size();
-
-                    std::cout << std::endl;
 
                     for (size_t i = 0; i != iSettlements; i++) {
                         iPeople     += vSettlements.at(i).iPeople;

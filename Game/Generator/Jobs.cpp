@@ -28,8 +28,6 @@ namespace NordicArts {
             }
 
             Job Jobs::getJob() {
-                std::cout << "!" << std::flush;
-
                 std::vector<Job> vJobs;
                 for (size_t i = 0; i != m_vJobs.size(); i++) {
                     if (m_vJobs.at(i).iMaxAge < m_sPerson.iAge) { continue; }
@@ -70,7 +68,6 @@ namespace NordicArts {
                     sJob.bHouseNeeded   = (bool)aJobs.get<jsonxx::Object>(i).get<jsonxx::Boolean>("houseNeeded");
                     sJob.bShopNeeded    = (bool)aJobs.get<jsonxx::Object>(i).get<jsonxx::Boolean>("shopNeeded");
 
-                    std::cout << "@" << std::flush;
                     m_vJobs.push_back(sJob);
                 }
             }

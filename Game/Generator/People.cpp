@@ -17,8 +17,6 @@ namespace NordicArts {
             }
 
             Person People::getPerson(std::string cLastName, std::string cFirstName, bool bHomeless) {
-                std::cout << "%" << std::flush;
-
                 int iAge    = NordicEngine::getRandom(0, 99, m_iSeed);
                 int iMaxAge;
                 if (iAge == 99 || iAge == 98) {
@@ -66,21 +64,17 @@ namespace NordicArts {
                 NordicEngine::NameGen oNameGen(m_iSeed);
                 oNameGen.generateLists();
 
-                std::cout << "P" << std::flush;
-
                 // create familys
                 int iFamilySize     = 2;
                 int iTotalPeople    = m_sSettlement.iPeople;
                 int iFamilys        = NordicEngine::getRandom((int)(m_sSettlement.iPeople / m_sSettlement.iHouses), (m_sSettlement.iPeople - m_sSettlement.iHouses), m_iSeed);
                 int iHousesTaken    = iFamilys;
                 for (int i = 0; i != iFamilys; i++) {
-                    std::cout << "£" << std::flush;
                     int iRandLength = NordicEngine::getRandom(3, 6, m_iSeed);
                     iFamilySize = NordicEngine::getRandom(2, (int)(m_sSettlement.iPeople / iFamilys), m_iSeed);
 
                     std::string cLastName = oNameGen.generateName(iRandLength);
                     for (int j = 0; j != iFamilySize; j++) {
-                        std::cout << "$" << std::flush;
                         Person sPerson      = getPerson(cLastName, oMarkov.generateWord(), false);
                         m_vPeople.push_back(sPerson);
                     }
@@ -93,7 +87,6 @@ namespace NordicArts {
                 int iHomeless = (iTotalPeople - (m_sSettlement.iHouses - iHousesTaken));
                 bool bHomeless = false;
                 for (int i = 0; i != iTotalPeople; i++) {
-                    std::cout << "L" << std::flush;
                     int iRandLength = NordicEngine::getRandom(3, 6, m_iSeed);
 
                     bHomeless = false;
