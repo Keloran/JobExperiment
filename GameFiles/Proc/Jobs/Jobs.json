@@ -16,7 +16,7 @@
             "maxAge": 16,
             "maxDistance": 10,
             "houseNeeded": false,
-            "shopNeeded": false,
+            "shopNeeded": false
         },
         {
             "name": "BlackSmith",
@@ -113,6 +113,60 @@
             "parentJob": "",
             "minAge": 60,
             "maxAge": 99,
+            "maxDistance": 0,
+            "houseNeeded": true,
+            "shopNeeded": false
+        },
+        {
+            "name": "Mayor",
+            "parentJob": "",
+            "minAge": 40,
+            "maxAge": 99,
+            "maxDistance": 0,
+            "houseNeeded": true,
+            "shopNeeded": false
+        },
+        {
+            "name": "Woodsman",
+            "parentJob": "",
+            "minAge": 7,
+            "maxAge": 60,
+            "maxDistance": 5,
+            "houseNeeded": true,
+            "shopNeeded": false
+        },
+        {
+            "name": "Joiner",
+            "parentJob": "",
+            "minAge": 21,
+            "maxAge": 99,
+            "maxDistance": 2,
+            "houseNeeded": true,
+            "shopNeeded": true
+        },
+        {
+            "name": "Apprentice",
+            "parentJob": "Joiner",
+            "minAge": 7,
+            "maxAge": 21,
+            "maxDistance": 4,
+            "houseNeeded": true,
+            "shopNeeded": false
+        },
+        {
+            "name": "Guard",
+            "parentJob": "",
+            "minAge": 21,
+            "maxAge": 60,
+            "maxDistance": 0,
+            "houseNeeded": true,
+            "shopNeeded": false
+        },
+        {
+            "name": "Apprentice",
+            "parentJob": "Guard",
+            "minAge": 7,
+            "maxAge": 21,
             "maxDistance": 0,
             "houseNeeded": true,
             "shopNeeded": false

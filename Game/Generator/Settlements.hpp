@@ -2,23 +2,11 @@
 #define NordicArts_Game_Generators_Settlements_H
 
 #include <Game/Includes.hpp>
-#include <Game/Generator/Jobs.hpp>
-#include <Game/Generator/People.hpp>
+#include <Game/Generator/Structs.hpp>
 
 namespace NordicArts {
     namespace Game {
         namespace Generators {
-            struct Settlement {
-                std::string cName;
-
-                int iSize;
-                int iHouses;
-                int iShops;
-                int iPeople;
-                
-                std::vector<Person> vPeople;
-            };
-
             class Settlements {
             // Variables
             public:

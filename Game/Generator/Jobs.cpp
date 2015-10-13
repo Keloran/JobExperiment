@@ -8,7 +8,7 @@
 namespace NordicArts {
     namespace Game {
         namespace Generators {
-            Jobs::Jobs(int iAge, int iSeed) : m_iAge(iAge), m_iSeed(iSeed) {
+            Jobs::Jobs(Settlement sSettlement, Person sPerson, int iSeed) : m_sSettlement(sSettlement), m_sPerson(sPerson), m_iSeed(iSeed) {
             }
     
             Jobs::~Jobs() {
@@ -21,16 +21,22 @@ namespace NordicArts {
                 sJob.iMaxDistance   = 0;
                 sJob.cParentJob     = "";
                 sJob.cJobName       = "Unemployed";
+                sJob.bHouseNeeded   = true;
+                sJob.bShopNeeded    = false;
         
                 return sJob;
             }
 
             Job Jobs::getJob() {
+                std::cout << "!" << std::flush;
+
                 std::vector<Job> vJobs;
                 for (size_t i = 0; i != m_vJobs.size(); i++) {
-                    if (m_vJobs.at(i).iMaxAge < m_iAge) { continue; }
-                    if (m_vJobs.at(i).iMinAge > m_iAge) { continue; }
-    
+                    if (m_vJobs.at(i).iMaxAge < m_sPerson.iAge) { continue; }
+                    if (m_vJobs.at(i).iMinAge > m_sPerson.iAge) { continue; }
+                    if (m_vJobs.at(i).bHouseNeeded == m_sPerson.bHomeless) { continue; }
+                    if ((m_vJobs.at(i).cJobName == "Mayor") && (m_sSettlement.bMayorAppointed)) { continue; }
+
                     vJobs.push_back(m_vJobs.at(i));
                 }
 
@@ -61,9 +67,10 @@ namespace NordicArts {
                     sJob.iMaxDistance   = aJobs.get<jsonxx::Object>(i).get<jsonxx::Number>("maxDistance");
                     sJob.cParentJob     = aJobs.get<jsonxx::Object>(i).get<jsonxx::String>("parentJob");
                     sJob.cJobName       = aJobs.get<jsonxx::Object>(i).get<jsonxx::String>("name");
-                    sJob.bHouseNeeded   = aJobs.get<jsonxx::Object>(i).get<jsonxx::Boolean>("houseNeeded");
-                    sJob.bShopNeeded    = aJobs.get<jsonxx::Object>(i).get<jsonxx::Boolean>("shopNeeded");
+                    sJob.bHouseNeeded   = (bool)aJobs.get<jsonxx::Object>(i).get<jsonxx::Boolean>("houseNeeded");
+                    sJob.bShopNeeded    = (bool)aJobs.get<jsonxx::Object>(i).get<jsonxx::Boolean>("shopNeeded");
 
+                    std::cout << "@" << std::flush;
                     m_vJobs.push_back(sJob);
                 }
             }

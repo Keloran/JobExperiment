@@ -36,18 +36,29 @@ namespace NordicArts {
                     pSeeder->setSeed(cSeed);
                     int iSeed = pSeeder->getSeed();
 
+                    std::cout << "Progress: " << std::flush;
+
                     Generators::Settlements oSettlements(3, iSeed);
                     oSettlements.generate();
                     
                     std::vector<Generators::Settlement> vSettlements = oSettlements.getSettlements();
-                    int iSettlements, iPeople = 0;
+                    int iSettlements, iPeople, iHomeless;
                     iSettlements = vSettlements.size();
 
+                    std::cout << std::endl;
+
                     for (size_t i = 0; i != iSettlements; i++) {
-                        iPeople += vSettlements.at(i).iPeople;
+                        iPeople     += vSettlements.at(i).iPeople;
+
+                        for (size_t j = 0; j != vSettlements.at(i).iPeople; j++) {
+                            bool bHomeless = vSettlements.at(i).vPeople.at(j).bHomeless;
+                            if (bHomeless) { iHomeless += 1; }
+                        }
                     }
+                    
                     printIt(iSettlements);
                     printIt(iPeople);
+                    printIt(iHomeless);
 
                 } catch (std::exception &oException) {
                     throw NordicEngine::Exception(oException.what());

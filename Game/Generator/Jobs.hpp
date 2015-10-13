@@ -2,35 +2,26 @@
 #define NordicArts_Game_Generators_Jobs_H
 
 #include <Game/Includes.hpp>
+#include <Game/Generator/Structs.hpp>
 
 namespace NordicArts {
     namespace Game {
         namespace Generators {
-            struct Job {
-                int iMinAge;
-                int iMaxAge;
-                int iMaxDistance;
-
-                std::string cJobName;
-                std::string cParentJob;
-
-                bool bHouseNeeded;
-                bool bShopNeeded;
-            };
-
             class Jobs {
             // Variables
             public:
             protected:
             private:
                 int m_iSeed;
-                int m_iAge;
 
                 std::vector<Job> m_vJobs;
 
+                Settlement  m_sSettlement;
+                Person      m_sPerson;
+
             // Methods
             public:
-                Jobs(int iPeople, int iSeed);
+                Jobs(Settlement sSettlement, Person sPerson, int iSeed);
                 ~Jobs();
 
                 Job getDefault();

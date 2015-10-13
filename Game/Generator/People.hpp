@@ -2,36 +2,18 @@
 #define NordicArts_Game_Generators_People_H
 
 #include <Game/Includes.hpp>
-#include <Jobs.hpp>
+#include <Game/Generator/Structs.hpp>
 
 namespace NordicArts {
     namespace Game {
         namespace Generators {
-            struct Person {
-                // Person Details
-                int iAge;
-                int iMaxAge;
-
-                // Linkers
-                int iBornSettlement;
-                int iParent;
-
-
-                // Male or Female
-                bool bMale;
-                
-                // Name
-                std::string cFirstName;
-                std::string cLastName;
-
-                Job sJob;
-            };
-
             class People {
             // Variables
             public:
             protected:
             private:
+                Settlement m_sSettlement;
+
                 int m_iSeed;
                 int m_iPeople;
                 int m_iHouses;
@@ -41,10 +23,10 @@ namespace NordicArts {
 
             // Methods
             public:
-                People(int iPeople, int iHouses, int iSeed);
+                People(Settlement sSettlement, int iSeed);
                 ~People();
 
-                Person getPerson(std::string cLastName, std::string cFirstName);
+                Person getPerson(std::string cLastName, std::string cFirstName, bool bHomeless);
                 
                 std::vector<Person> getPeople();                
 

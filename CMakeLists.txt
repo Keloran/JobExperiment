@@ -43,6 +43,9 @@ include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${GP}/Generator)
 link_directories(${GP}/Generator)
 
+# Structs
+list(APPEND LibHeaders ${GP}/Generator/Structs.hpp)
+
 # Jobs
 list(APPEND LibHeaders ${GP}/Generator/Jobs.hpp)
 list(APPEND LibSources ${GP}/Generator/Jobs.cpp)

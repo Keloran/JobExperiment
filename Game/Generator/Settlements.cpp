@@ -1,4 +1,5 @@
 #include <Game/Generator/Settlements.hpp>
+#include <Game/Generator/People.hpp>
 
 #include <NordicEngine/Utility/Maths.hpp>
 #include <NordicEngine/String/String.hpp>
@@ -13,10 +14,12 @@ namespace NordicArts {
             }
 
             void Settlements::generate() {
+                std::cout << "S" << std::flush;
+
                 for (int i = 0; i != m_iSize; i++) {
                     Settlement sSettlement = getSettlement();
 
-                    People oPeople(sSettlement.iPeople, sSettlement.iHouses, m_iSeed);
+                    People oPeople(sSettlement, m_iSeed);
                     sSettlement.vPeople = oPeople.getPeople();
 
                     m_vSettlements.push_back(sSettlement);
@@ -35,7 +38,7 @@ namespace NordicArts {
                 sSettlement.iPeople     = 14;
                 sSettlement.cName       = "Defaultious";
 
-                People oPeople(14, 10, m_iSeed);
+                People oPeople(sSettlement, m_iSeed);
                 sSettlement.vPeople     = oPeople.getPeople();
 
                 return sSettlement;
@@ -52,26 +55,24 @@ namespace NordicArts {
                 if (iSize > 3 && iSize < 10) {
                     iPeople = NordicEngine::getRandom(36, 80, m_iSeed);
 
-                    sSettlement.iHouses = NordicEngine::getRandom((iPeople - iSize), iPeople, m_iSeed);
-                    sSettlement.iShops  = NordicEngine::getRandom((iPeople - (iSize - 5)), iPeople, m_iSeed);
+                    sSettlement.iHouses = NordicEngine::getRandom((iPeople - iSize), (iPeople + iSize), m_iSeed);
+                    sSettlement.iShops  = NordicEngine::getRandom((iPeople - (iSize - 5)), (iPeople + (iSize - 5)), m_iSeed);
                     sSettlement.cName   = ("town_" + NordicEngine::getString(iSize));
                 } else if (iSize > 10) {
                     iPeople = NordicEngine::getRandom(65, 180, m_iSeed);
 
-                    sSettlement.iHouses = NordicEngine::getRandom((iPeople - iSize), iPeople, m_iSeed);
-                    sSettlement.iShops  = NordicEngine::getRandom((iPeople - (iSize - 20)), iPeople, m_iSeed);
+                    sSettlement.iHouses = NordicEngine::getRandom((iPeople - iSize), (iPeople + iSize), m_iSeed);
+                    sSettlement.iShops  = NordicEngine::getRandom((iPeople - (iSize - 20)), (iPeople + (iSize - 20)), m_iSeed);
                     sSettlement.cName   = ("city_" + NordicEngine::getString(iSize));
                 } else {
                     iPeople = NordicEngine::getRandom(1, 40, m_iSeed);
 
-                    sSettlement.iHouses = NordicEngine::getRandom((iPeople - iSize), iPeople, m_iSeed);
-                    sSettlement.iShops  = NordicEngine::getRandom((iPeople - (iSize - 2)), iPeople, m_iSeed);
+                    sSettlement.iHouses = NordicEngine::getRandom((iPeople - iSize), (iPeople + iSize), m_iSeed);
+                    sSettlement.iShops  = NordicEngine::getRandom((iPeople - (iSize - 2)), (iPeople + (iSize - 2)), m_iSeed);
                     sSettlement.cName   = ("village_" + NordicEngine::getString(iSize));
                 }
 
                 sSettlement.iPeople = iPeople;
-
-                printIt(sSettlement.cName);
 
                 return sSettlement;
             }

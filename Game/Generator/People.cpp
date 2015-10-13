@@ -1,4 +1,5 @@
 #include <Game/Generator/People.hpp>
+#include <Game/Generator/Jobs.hpp>
 
 #include <NordicEngine/Utility/Maths.hpp>
 #include <NordicEngine/Files/Format/TextFile/Reader.hpp>
@@ -9,13 +10,15 @@
 namespace NordicArts {
     namespace Game {
         namespace Generators {
-            People::People(int iPeople, int iHouses, int iSeed) : m_iPeople(iPeople), m_iHouses(iHouses), m_iSeed(iSeed) {
+            People::People(Settlement sSettlement, int iSeed) : m_sSettlement(sSettlement), m_iSeed(iSeed) {
             }
 
             People::~People() {
             }
 
-            Person People::getPerson(std::string cLastName, std::string cFirstName) {
+            Person People::getPerson(std::string cLastName, std::string cFirstName, bool bHomeless) {
+                std::cout << "%" << std::flush;
+
                 int iAge    = NordicEngine::getRandom(0, 99, m_iSeed);
                 int iMaxAge;
                 if (iAge == 99 || iAge == 98) {
@@ -35,11 +38,13 @@ namespace NordicArts {
                 sPerson.iAge        = iAge;
                 sPerson.iMaxAge     = iMaxAge;
                 sPerson.bMale       = bMale;
+                sPerson.bHomeless   = bHomeless;
 
-                Jobs oJob(iAge, m_iSeed);
+                Jobs oJob(m_sSettlement, sPerson, m_iSeed);
                 oJob.generate();
 
                 sPerson.sJob    = oJob.getJob();
+                if (sPerson.sJob.cJobName == "Mayor") { m_sSettlement.bMayorAppointed = true; }
 
                 return sPerson;
             }
@@ -61,32 +66,41 @@ namespace NordicArts {
                 NordicEngine::NameGen oNameGen(m_iSeed);
                 oNameGen.generateLists();
 
+                std::cout << "P" << std::flush;
+
                 // create familys
-                int iFamilySize = 5;
-                int iTotalPeople = m_iPeople;
-
-                int iFamilys    = NordicEngine::getRandom((m_iPeople - m_iHouses), m_iHouses, m_iSeed);
+                int iFamilySize     = 2;
+                int iTotalPeople    = m_sSettlement.iPeople;
+                int iFamilys        = NordicEngine::getRandom((int)(m_sSettlement.iPeople / m_sSettlement.iHouses), (m_sSettlement.iPeople - m_sSettlement.iHouses), m_iSeed);
+                int iHousesTaken    = iFamilys;
                 for (int i = 0; i != iFamilys; i++) {
+                    std::cout << "£" << std::flush;
                     int iRandLength = NordicEngine::getRandom(3, 6, m_iSeed);
-                    iFamilySize = NordicEngine::getRandom(2, (int)(m_iPeople / iFamilys), m_iSeed);
-                    iTotalPeople = (iTotalPeople - iFamilySize);
-
-                    printIt(iTotalPeople);
-                    printIt("Family " + NordicEngine::getString(i));
-                    if (iTotalPeople <= 0) { break; };
+                    iFamilySize = NordicEngine::getRandom(2, (int)(m_sSettlement.iPeople / iFamilys), m_iSeed);
 
                     std::string cLastName = oNameGen.generateName(iRandLength);
                     for (int j = 0; j != iFamilySize; j++) {
-                        Person sPerson      = getPerson(cLastName, oMarkov.generateWord());
+                        std::cout << "$" << std::flush;
+                        Person sPerson      = getPerson(cLastName, oMarkov.generateWord(), false);
                         m_vPeople.push_back(sPerson);
                     }
+                                        
+                    iTotalPeople = (iTotalPeople - iFamilySize);
+                    if (iTotalPeople <= 0) { break; };
                 }
 
                 // People not in a family
+                int iHomeless = (iTotalPeople - (m_sSettlement.iHouses - iHousesTaken));
+                bool bHomeless = false;
                 for (int i = 0; i != iTotalPeople; i++) {
+                    std::cout << "L" << std::flush;
                     int iRandLength = NordicEngine::getRandom(3, 6, m_iSeed);
 
-                    Person sPerson      = getPerson(oNameGen.generateName(iRandLength), oMarkov.generateWord());
+                    bHomeless = false;
+                    if (iHomeless >= 1) { bHomeless = true; }
+
+                    Person sPerson      = getPerson(oNameGen.generateName(iRandLength), oMarkov.generateWord(), bHomeless);
+                    iHomeless           = (iHomeless - 1);
 
                     m_vPeople.push_back(sPerson);
                 }
