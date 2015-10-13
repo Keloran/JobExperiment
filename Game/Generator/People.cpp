@@ -4,6 +4,7 @@
 #include <NordicEngine/Files/Format/TextFile/Reader.hpp>
 #include <NordicEngine/Utility/Markov.hpp>
 #include <NordicEngine/String/String.hpp>
+#include <NordicEngine/Utility/NameGen.hpp>
 
 namespace NordicArts {
     namespace Game {
@@ -56,12 +57,25 @@ namespace NordicArts {
                 // Generate the list of chances
                 oMarkov.generate();
 
-                // create familys
-                int iFamilys    = NordicEngine::getRandom(m_iPeople, m_iHouses, m_iSeed);
-                int iFamilySize = NordicEngine::getRandom(m_iPeople, iFamilys, m_iSeed);
-                for (int i = 0; i != iFamilys; i++) {
-                    std::string cLastName = oMarkov.generateWord(m_iSeed);
+                // Generate last name
+                NordicEngine::NameGen oNameGen(m_iSeed);
+                oNameGen.generateLists();
 
+                // create familys
+                int iFamilySize = 5;
+                int iTotalPeople = m_iPeople;
+
+                int iFamilys    = NordicEngine::getRandom((m_iPeople - m_iHouses), m_iHouses, m_iSeed);
+                for (int i = 0; i != iFamilys; i++) {
+                    int iRandLength = NordicEngine::getRandom(3, 6, m_iSeed);
+                    iFamilySize = NordicEngine::getRandom(2, (int)(m_iPeople / iFamilys), m_iSeed);
+                    iTotalPeople = (iTotalPeople - iFamilySize);
+
+                    printIt(iTotalPeople);
+                    printIt("Family " + NordicEngine::getString(i));
+                    if (iTotalPeople <= 0) { break; };
+
+                    std::string cLastName = oNameGen.generateName(iRandLength);
                     for (int j = 0; j != iFamilySize; j++) {
                         Person sPerson      = getPerson(cLastName, oMarkov.generateWord());
                         m_vPeople.push_back(sPerson);
@@ -69,12 +83,10 @@ namespace NordicArts {
                 }
 
                 // People not in a family
-                int iRemainder = (m_iPeople - (iFamilySize + iFamilys));
-                for (int i = 0; i != iRemainder; i++) {
-                    Person sPerson      = getPerson(oMarkov.generateWord(), oMarkov.generateWord());
+                for (int i = 0; i != iTotalPeople; i++) {
+                    int iRandLength = NordicEngine::getRandom(3, 6, m_iSeed);
 
-                    printIt(sPerson.cFirstName + " " + sPerson.cLastName);
-                    printIt(sPerson.sJob.cJobName + " " + sPerson.sJob.cParentJob);
+                    Person sPerson      = getPerson(oNameGen.generateName(iRandLength), oMarkov.generateWord());
 
                     m_vPeople.push_back(sPerson);
                 }
