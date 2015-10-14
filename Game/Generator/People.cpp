@@ -16,8 +16,15 @@ namespace NordicArts {
             People::~People() {
             }
 
-            Person People::getPerson(std::string cLastName, std::string cFirstName, bool bHomeless) {
-                int iAge    = NordicEngine::getRandom(0, 99, m_iSeed);
+            void People::setHomeless(bool bHomeless) {
+                m_bHomeless = bHomeless;
+            }
+            void People::setMinAge(int iMinAge) {
+                m_iMinAge = iMinAge;
+            }
+
+            Person People::getPerson(std::string cLastName, std::string cFirstName) {
+                int iAge    = NordicEngine::getRandom(m_iMinAge, 99, m_iSeed);
                 int iMaxAge;
                 if (iAge == 99 || iAge == 98) {
                     iMaxAge = 99;
@@ -36,7 +43,7 @@ namespace NordicArts {
                 sPerson.iAge        = iAge;
                 sPerson.iMaxAge     = iMaxAge;
                 sPerson.bMale       = bMale;
-                sPerson.bHomeless   = bHomeless;
+                sPerson.bHomeless   = m_bHomeless;
 
                 Jobs oJob(m_sSettlement, sPerson, m_iSeed);
                 oJob.generate();
@@ -44,10 +51,24 @@ namespace NordicArts {
                 sPerson.sJob    = oJob.getJob();
                 if (sPerson.sJob.cJobName == "Mayor") { m_sSettlement.bMayorAppointed = true; }
 
-                std::string cStatus = ("Generated " + sPerson.sJob.cJobName + " " + sPerson.sJob.cParentJob + " " + sPerson.cFirstName + " " + sPerson.cLastName);
-                printIt(cStatus);
-
+                personInfo(sPerson);
                 return sPerson;
+            }
+
+            void People::personInfo(Person sPerson) {
+                std::string cStatus = "Generated ";
+                cStatus += (sPerson.sJob.cJobName + " ");
+
+                if (sPerson.sJob.cParentJob != "") {
+                    cStatus += (sPerson.sJob.cParentJob + " ");
+                }
+
+                cStatus += (NordicEngine::getString(sPerson.iAge) + "year old ");
+
+                cStatus += (sPerson.cFirstName + " ");
+                cStatus += (sPerson.cLastName + " ");
+
+                printIt(cStatus);
             }
 
             std::vector<Person> People::getPeople() {
@@ -85,12 +106,15 @@ namespace NordicArts {
                     printIt(cStatus);
 
                     for (int j = 0; j != iFamilySize; j++) {
-                        Person sPerson      = getPerson(cLastName, oMarkov.generateWord(), false);
+                        setMinAge(0);
+                        if (j == 0) { setMinAge(21); } // need at least 1 adult 
+
+                        Person sPerson      = getPerson(cLastName, oMarkov.generateWord());
                         m_vPeople.push_back(sPerson);
                     }
                     cStatus = ("Generated the " + cLastName + " Family");
                     printIt(cStatus);
-                                        
+
                     iTotalPeople = (iTotalPeople - iFamilySize);
                     if (iTotalPeople <= 0) { break; };
                 }
@@ -113,7 +137,8 @@ namespace NordicArts {
                     std::string cLastName   = oNameGen.generateName(iRandLength);
                     std::string cFirstName  = oMarkov.generateWord();
 
-                    Person sPerson      = getPerson(cLastName, cFirstName, bHomeless);
+                    setHomeless(bHomeless);
+                    Person sPerson      = getPerson(cLastName, cFirstName);
                     iHomeless           = (iHomeless - 1);
 
                     m_vPeople.push_back(sPerson);

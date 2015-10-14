@@ -16,6 +16,16 @@ namespace NordicArts {
                 bool bShopNeeded;
             };
 
+            struct Family {
+                std::string cLastName;
+                
+                Person sDad;
+                Person sMum;
+                
+                std::vector<Person> vGrandParents;
+                std::vector<Person> vChildren;
+            };
+
             struct Person {
                 int iAge;
                 int iMaxAge;

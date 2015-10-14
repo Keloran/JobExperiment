@@ -17,16 +17,19 @@ namespace NordicArts {
                 int m_iSeed;
                 int m_iPeople;
                 int m_iHouses;
+                int m_iMinAge = 0;
 
-                std::vector<std::string> m_vNames;
+                bool m_bHomeless = false;
+
                 std::vector<Person> m_vPeople;
+                std::vector<Family> m_vFamilies;
 
             // Methods
             public:
                 People(Settlement sSettlement, int iSeed);
                 ~People();
 
-                Person getPerson(std::string cLastName, std::string cFirstName, bool bHomeless);
+                Person getPerson(std::string cLastName, std::string cFirstName);
                 
                 std::vector<Person> getPeople();                
 
@@ -34,6 +37,9 @@ namespace NordicArts {
 
             protected:
             private:
+                void personInfo(Person sPerson);
+                void setMinAge(int iMinAge);
+                void setHomeless(bool bHomeless);
 
             };
         };
