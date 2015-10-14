@@ -44,6 +44,9 @@ namespace NordicArts {
                 sPerson.sJob    = oJob.getJob();
                 if (sPerson.sJob.cJobName == "Mayor") { m_sSettlement.bMayorAppointed = true; }
 
+                std::string cStatus = ("Generated " + sPerson.sJob.cJobName + " " + sPerson.sJob.cParentJob + " " + sPerson.cFirstName + " " + sPerson.cLastName);
+                printIt(cStatus);
+
                 return sPerson;
             }
 
@@ -64,6 +67,10 @@ namespace NordicArts {
                 NordicEngine::NameGen oNameGen(m_iSeed);
                 oNameGen.generateLists();
 
+                std::string cStatus = "Generating Families";
+
+                printIt(cStatus);
+
                 // create familys
                 int iFamilySize     = 2;
                 int iTotalPeople    = m_sSettlement.iPeople;
@@ -74,14 +81,25 @@ namespace NordicArts {
                     iFamilySize = NordicEngine::getRandom(2, (int)(m_sSettlement.iPeople / iFamilys), m_iSeed);
 
                     std::string cLastName = oNameGen.generateName(iRandLength);
+                    cStatus = ("Generating the " + cLastName + " Family");
+                    printIt(cStatus);
+
                     for (int j = 0; j != iFamilySize; j++) {
                         Person sPerson      = getPerson(cLastName, oMarkov.generateWord(), false);
                         m_vPeople.push_back(sPerson);
                     }
+                    cStatus = ("Generated the " + cLastName + " Family");
+                    printIt(cStatus);
                                         
                     iTotalPeople = (iTotalPeople - iFamilySize);
                     if (iTotalPeople <= 0) { break; };
                 }
+
+                cStatus = "Generated Families";
+                printIt(cStatus);
+
+                cStatus = "Generating Loners";
+                printIt(cStatus);
 
                 // People not in a family
                 int iHomeless = (iTotalPeople - (m_sSettlement.iHouses - iHousesTaken));
@@ -92,11 +110,17 @@ namespace NordicArts {
                     bHomeless = false;
                     if (iHomeless >= 1) { bHomeless = true; }
 
-                    Person sPerson      = getPerson(oNameGen.generateName(iRandLength), oMarkov.generateWord(), bHomeless);
+                    std::string cLastName   = oNameGen.generateName(iRandLength);
+                    std::string cFirstName  = oMarkov.generateWord();
+
+                    Person sPerson      = getPerson(cLastName, cFirstName, bHomeless);
                     iHomeless           = (iHomeless - 1);
 
                     m_vPeople.push_back(sPerson);
                 }
+
+                cStatus = "Generated Loners";
+                printIt(cStatus);
             }
         };
     };

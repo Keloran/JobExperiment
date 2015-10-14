@@ -14,6 +14,10 @@ namespace NordicArts {
             }
 
             void Settlements::generate() {
+                std::string cStatus = "Generating Settlements";
+
+                printIt(cStatus);
+
                 for (int i = 0; i != m_iSize; i++) {
                     Settlement sSettlement = getSettlement();
 
@@ -21,7 +25,13 @@ namespace NordicArts {
                     sSettlement.vPeople = oPeople.getPeople();
 
                     m_vSettlements.push_back(sSettlement);
+
+                    cStatus = ("Generated the settlement of " + sSettlement.cName);
+                    printIt(cStatus);
                 }
+
+                cStatus = "Generated Settlements";
+                printIt(cStatus);
             }
 
             std::vector<Settlement> Settlements::getSettlements() {
