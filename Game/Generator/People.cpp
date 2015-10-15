@@ -80,50 +80,49 @@ namespace NordicArts {
             Family People::makeFamily(std::string cLastName, std::vector<Person> vPeople) {
                 Family sFamily;
 
-                bool bGrandParent   = false;
-                bool bChild         = false;
-                bool bMum           = false;
-                bool bDad           = false;
-                bool bAdded         = false;
+                Person sDad;
+                Person sMum;
+                std::vector<Person> vGrandParents;
+                std::vector<Person> vChildren;
                 
-                sFamily.cLastName = cLastName;
-
                 for (size_t i = 0; i != vPeople.size(); i++) {
-                    bGrandParent    = false;
-                    bChild          = false;
-                    bAdded          = false;
+                    Person sPerson = vPeople.at(i);
 
-                    if (sFamily.sDad.cFirstName != "") { bDad = true; }
-                    if (sFamily.sMum.cFirstName != "") { bMum = true; }
-                    if (vPeople.at(i).iAge >= 60) { bGrandParent = true; }
-                    if (vPeople.at(i).iAge <= 21) { bChild = true; }
-
-                    std::string cInfo = "Person is ";
-                    cInfo += ("Male: " + NordicEngine::getString(vPeople.at(i).bMale));
-                    cInfo += (", Aged: " + NordicEngine::getString(vPeople.at(i).iAge));
+                    std::string cInfo = "Person Info: ";
+                    cInfo += ("Male: " + NordicEngine::getString(sPerson.bMale));
+                    cInfo += (", Age: " + NordicEngine::getString(sPerson.iAge));
                     printIt(cInfo);
-
-                    // Add Parents
-                    if (vPeople.at(i).bMale) {
-                        if (!bDad) {
-                            sFamily.sDad    = vPeople.at(i);
-                            bAdded          = true;
-                            bDad            = true;
+                    
+                    if (sPerson.bMale) {
+                        if (sDad.cFirstName == "") {
+                            sDad = sPerson;
+                        } else {
+                            if (sDad.iAge > sPerson.iAge) {
+                                vChildren.push_back(sPerson);
+                            } else {
+                                vGrandParents.push_back(sDad);
+                                sDad = sPerson;
+                            }
                         }
                     } else {
-                        if (!bMum) {
-                            sFamily.sMum    = vPeople.at(i);
-                            bAdded          = true;
-                            bMum            = true;
+                        if (sMum.cFirstName == "") {
+                            sMum = sPerson;
+                        } else {
+                            if (sMum.iAge > sPerson.iAge) {
+                                vChildren.push_back(sPerson);
+                            } else {
+                                vGrandParents.push_back(sMum);
+                                sMum = sPerson;
+                            }
                         }
                     }
-
-                    // Add others
-                    if (!bAdded) { 
-                        if (bGrandParent) { sFamily.vGrandParents.push_back(vPeople.at(i)); }
-                        if (bChild) { sFamily.vChildren.push_back(vPeople.at(i)); }
-                    }
                 }
+
+                sFamily.cLastName       = cLastName;
+                sFamily.sDad            = sDad;
+                sFamily.sMum            = sMum;
+                sFamily.vGrandParents   = vGrandParents;
+                sFamily.vChildren       = vChildren;
 
                 return sFamily;
             }
@@ -140,7 +139,6 @@ namespace NordicArts {
                 oNameGen.generateLists();
 
                 std::string cStatus = "Generating Families";
-
                 printIt(cStatus);
 
                 // create familys
