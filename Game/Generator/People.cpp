@@ -77,6 +77,57 @@ namespace NordicArts {
                 return m_vPeople;
             }
 
+            Family People::makeFamily(std::string cLastName, std::vector<Person> vPeople) {
+                Family sFamily;
+
+                bool bGrandParent   = false;
+                bool bChild         = false;
+                bool bMum           = false;
+                bool bDad           = false;
+                bool bAdded         = false;
+                
+                sFamily.cLastName = cLastName;
+
+                for (size_t i = 0; i != vPeople.size(); i++) {
+                    bGrandParent    = false;
+                    bChild          = false;
+                    bAdded          = false;
+
+                    if (sFamily.sDad.cFirstName != "") { bDad = true; }
+                    if (sFamily.sMum.cFirstName != "") { bMum = true; }
+                    if (vPeople.at(i).iAge >= 60) { bGrandParent = true; }
+                    if (vPeople.at(i).iAge <= 21) { bChild = true; }
+
+                    std::string cInfo = "Person is ";
+                    cInfo += ("Male: " + NordicEngine::getString(vPeople.at(i).bMale));
+                    cInfo += (", Aged: " + NordicEngine::getString(vPeople.at(i).iAge));
+                    printIt(cInfo);
+
+                    // Add Parents
+                    if (vPeople.at(i).bMale) {
+                        if (!bDad) {
+                            sFamily.sDad    = vPeople.at(i);
+                            bAdded          = true;
+                            bDad            = true;
+                        }
+                    } else {
+                        if (!bMum) {
+                            sFamily.sMum    = vPeople.at(i);
+                            bAdded          = true;
+                            bMum            = true;
+                        }
+                    }
+
+                    // Add others
+                    if (!bAdded) { 
+                        if (bGrandParent) { sFamily.vGrandParents.push_back(vPeople.at(i)); }
+                        if (bChild) { sFamily.vChildren.push_back(vPeople.at(i)); }
+                    }
+                }
+
+                return sFamily;
+            }
+
             void People::generate() {
                 NordicEngine::Markov oMarkov;
                 oMarkov.setNamesList("GameFiles/Proc/Names/names-list");
@@ -105,13 +156,24 @@ namespace NordicArts {
                     cStatus = ("Generating the " + cLastName + " Family");
                     printIt(cStatus);
 
+                    // Temp Family
+                    std::vector<Person> vPeople;
+
                     for (int j = 0; j != iFamilySize; j++) {
                         setMinAge(0);
                         if (j == 0) { setMinAge(21); } // need at least 1 adult 
 
                         Person sPerson      = getPerson(cLastName, oMarkov.generateWord());
                         m_vPeople.push_back(sPerson);
+                        vPeople.push_back(sPerson);
                     }
+
+                    // Actual Family
+                    Family sFamily = makeFamily(cLastName, vPeople);
+                    printIt(sFamily.sMum.cFirstName);
+                    printIt(sFamily.sDad.cFirstName);
+
+                    m_vFamilies.push_back(sFamily);
                     cStatus = ("Generated the " + cLastName + " Family");
                     printIt(cStatus);
 
@@ -124,6 +186,14 @@ namespace NordicArts {
 
                 cStatus = "Generating Loners";
                 printIt(cStatus);
+
+                printIt(m_vFamilies.size());
+                for (size_t i = 0; i != m_vFamilies.size(); i++) {
+                    printIt(m_vFamilies.at(i).vGrandParents.size());
+                    printIt(m_vFamilies.at(i).vChildren.size());
+                    printIt(m_vFamilies.at(i).sDad.cFirstName);
+                    printIt(m_vFamilies.at(i).sMum.cFirstName);
+                }
 
                 // People not in a family
                 int iHomeless = (iTotalPeople - (m_sSettlement.iHouses - iHousesTaken));

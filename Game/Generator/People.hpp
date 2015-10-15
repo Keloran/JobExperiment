@@ -41,6 +41,8 @@ namespace NordicArts {
                 void setMinAge(int iMinAge);
                 void setHomeless(bool bHomeless);
 
+                Family makeFamily(std::string cLastName, std::vector<Person> vPeople);
+
             };
         };
     };
