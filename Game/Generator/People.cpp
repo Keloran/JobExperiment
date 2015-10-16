@@ -88,13 +88,6 @@ namespace NordicArts {
                 
                 for (size_t i = 0; i != vPeople.size(); i++) {
                     Person sPerson = vPeople.at(i);
-
-                    /**
-                    std::string cInfo = "Person Info: ";
-                    cInfo += ("Male: " + NordicEngine::getString(sPerson.bMale));
-                    cInfo += (", Age: " + NordicEngine::getString(sPerson.iAge));
-                    printIt(cInfo);
-                     */
                     
                     if (sPerson.bMale) {
                         if (sDad.cFirstName == "") {
@@ -121,15 +114,65 @@ namespace NordicArts {
                     }
                 }
 
-                //if (sMum.cFirstName == "") {
+                // Make certain there is a mum
+                if (sMum.cFirstName == "") {
                     int iChildren       = vChildren.size();
-                    int iGrandParents   = vChildren.size();
+                    int iGrandParents   = vGrandParents.size();
 
-                    printIt(iChildren);
-                    printIt(iGrandParents);
+                    if (iGrandParents > 4) {
+                        int i = 0;
+                        for (std::vector<Person>::iterator it = vGrandParents.begin(); it != vGrandParents.end(); it++) {
+                            if (i > 4) {
+                                if (sMum.cFirstName == "") {
+                                    sMum = getPerson(it->cLastName, it->cFirstName, false);
+                                    vGrandParents.erase(it);
+                                } else {
+                                    vGrandParents.erase(it);
+                                }
+                            }
+                            i++;
+                        }
+                    }
 
-                    //sMum = getPerson(cLastName, )
-                //}
+                    if (sMum.cFirstName == "") {
+                        for (std::vector<Person>::iterator it = vChildren.end(); it != vChildren.begin(); it--) {
+                            if (sMum.cFirstName == "") {
+                                sMum = getPerson(it->cLastName, it->cFirstName, false);
+                                vChildren.erase(it);
+                            }
+                        }
+                    }
+                }
+
+                // Make certain there is a dad
+                if (sDad.cFirstName == "") {
+                    int iChildren       = vChildren.size();
+                    int iGrandParents   = vGrandParents.size();
+
+                    if (iGrandParents > 4) {
+                        int i = 0;
+                        for (std::vector<Person>::iterator it = vGrandParents.begin(); it != vGrandParents.end(); it++) {
+                            if (i > 4) {
+                                if (sDad.cFirstName == "") {
+                                    sDad = getPerson(it->cLastName, it->cFirstName, false);
+                                    vGrandParents.erase(it);
+                                } else {
+                                    vGrandParents.erase(it);
+                                }
+                            }
+                            i++;
+                        }
+                    }
+
+                    if (sDad.cFirstName == "") {
+                        for (std::vector<Person>::iterator it = vChildren.end(); it != vChildren.begin(); it--) {
+                            if (sDad.cFirstName == "") {
+                                sDad = getPerson(it->cLastName, it->cFirstName, false);
+                                vChildren.erase(it);
+                            }
+                        }
+                    }
+                }
 
                 sFamily.cLastName       = cLastName;
                 sFamily.sDad            = sDad;
