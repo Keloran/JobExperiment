@@ -24,6 +24,11 @@ namespace NordicArts {
             }
 
             Person People::getPerson(std::string cLastName, std::string cFirstName) {
+                bool bMale = NordicEngine::getRandom(0, 1, m_iSeed);
+
+                return getPerson(cLastName, cFirstName, (bool)bMale);
+            }
+            Person People::getPerson(std::string cLastName, std::string cFirstName, bool bMale) {
                 int iAge    = NordicEngine::getRandom(m_iMinAge, 99, m_iSeed);
                 int iMaxAge;
                 if (iAge == 99 || iAge == 98) {
@@ -31,10 +36,6 @@ namespace NordicArts {
                 } else {
                     iMaxAge = NordicEngine::getRandom((iAge + 1), 99, m_iSeed);
                 }
-                int iSex    = NordicEngine::getRandom(0, 1, m_iSeed);
-
-                bool bMale = false;
-                if (iSex == 1) { bMale = true; }
 
                 Person sPerson;
 
@@ -88,10 +89,12 @@ namespace NordicArts {
                 for (size_t i = 0; i != vPeople.size(); i++) {
                     Person sPerson = vPeople.at(i);
 
+                    /**
                     std::string cInfo = "Person Info: ";
                     cInfo += ("Male: " + NordicEngine::getString(sPerson.bMale));
                     cInfo += (", Age: " + NordicEngine::getString(sPerson.iAge));
                     printIt(cInfo);
+                     */
                     
                     if (sPerson.bMale) {
                         if (sDad.cFirstName == "") {
@@ -117,6 +120,16 @@ namespace NordicArts {
                         }
                     }
                 }
+
+                //if (sMum.cFirstName == "") {
+                    int iChildren       = vChildren.size();
+                    int iGrandParents   = vChildren.size();
+
+                    printIt(iChildren);
+                    printIt(iGrandParents);
+
+                    //sMum = getPerson(cLastName, )
+                //}
 
                 sFamily.cLastName       = cLastName;
                 sFamily.sDad            = sDad;

@@ -15,8 +15,6 @@ namespace NordicArts {
                 Settlement m_sSettlement;
 
                 int m_iSeed;
-                int m_iPeople;
-                int m_iHouses;
                 int m_iMinAge = 0;
 
                 bool m_bHomeless = false;
@@ -30,6 +28,7 @@ namespace NordicArts {
                 ~People();
 
                 Person getPerson(std::string cLastName, std::string cFirstName);
+                Person getPerson(std::string cLastName, std::string cFirstName, bool bMale);
                 
                 std::vector<Person> getPeople();                
 
