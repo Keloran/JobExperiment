@@ -1,11 +1,10 @@
 #include <Game/Generator/People.hpp>
 #include <Game/Generator/Jobs.hpp>
+#include <Game/Generator/Names.hpp>
 
 #include <NordicEngine/Utility/Maths.hpp>
 #include <NordicEngine/Files/Format/TextFile/Reader.hpp>
-#include <NordicEngine/Utility/Markov.hpp>
 #include <NordicEngine/String/String.hpp>
-#include <NordicEngine/Utility/NameGen.hpp>
 
 namespace NordicArts {
     namespace Game {
@@ -23,18 +22,26 @@ namespace NordicArts {
                 m_iMinAge = iMinAge;
             }
 
-            Person People::getPerson(std::string cLastName, std::string cFirstName) {
+            Person People::getPerson(std::string cLastName) {
                 bool bMale = NordicEngine::getRandom(0, 1, m_iSeed);
 
-                return getPerson(cLastName, cFirstName, (bool)bMale);
+                return getPerson(cLastName, (bool)bMale);
             }
-            Person People::getPerson(std::string cLastName, std::string cFirstName, bool bMale) {
+            Person People::getPerson(std::string cLastName, bool bMale) {
                 int iAge    = NordicEngine::getRandom(m_iMinAge, 99, m_iSeed);
                 int iMaxAge;
                 if (iAge == 99 || iAge == 98) {
                     iMaxAge = 99;
                 } else {
                     iMaxAge = NordicEngine::getRandom((iAge + 1), 99, m_iSeed);
+                }
+
+                std::string cFirstName;
+                Names oNames;
+                if (bMale) {
+                    cFirstName = oNames.getMaleName(m_iSeed);
+                } else {
+                    cFirstName = oNames.getFemaleName(m_iSeed);
                 }
 
                 Person sPerson;
@@ -114,66 +121,6 @@ namespace NordicArts {
                     }
                 }
 
-                // Make certain there is a mum
-                if (sMum.cFirstName == "") {
-                    int iChildren       = vChildren.size();
-                    int iGrandParents   = vGrandParents.size();
-
-                    if (iGrandParents > 4) {
-                        int i = 0;
-                        for (std::vector<Person>::iterator it = vGrandParents.begin(); it != vGrandParents.end(); it++) {
-                            if (i > 4) {
-                                if (sMum.cFirstName == "") {
-                                    sMum = getPerson(it->cLastName, it->cFirstName, false);
-                                    vGrandParents.erase(it);
-                                } else {
-                                    vGrandParents.erase(it);
-                                }
-                            }
-                            i++;
-                        }
-                    }
-
-                    if (sMum.cFirstName == "") {
-                        for (std::vector<Person>::iterator it = vChildren.end(); it != vChildren.begin(); it--) {
-                            if (sMum.cFirstName == "") {
-                                sMum = getPerson(it->cLastName, it->cFirstName, false);
-                                vChildren.erase(it);
-                            }
-                        }
-                    }
-                }
-
-                // Make certain there is a dad
-                if (sDad.cFirstName == "") {
-                    int iChildren       = vChildren.size();
-                    int iGrandParents   = vGrandParents.size();
-
-                    if (iGrandParents > 4) {
-                        int i = 0;
-                        for (std::vector<Person>::iterator it = vGrandParents.begin(); it != vGrandParents.end(); it++) {
-                            if (i > 4) {
-                                if (sDad.cFirstName == "") {
-                                    sDad = getPerson(it->cLastName, it->cFirstName, false);
-                                    vGrandParents.erase(it);
-                                } else {
-                                    vGrandParents.erase(it);
-                                }
-                            }
-                            i++;
-                        }
-                    }
-
-                    if (sDad.cFirstName == "") {
-                        for (std::vector<Person>::iterator it = vChildren.end(); it != vChildren.begin(); it--) {
-                            if (sDad.cFirstName == "") {
-                                sDad = getPerson(it->cLastName, it->cFirstName, false);
-                                vChildren.erase(it);
-                            }
-                        }
-                    }
-                }
-
                 sFamily.cLastName       = cLastName;
                 sFamily.sDad            = sDad;
                 sFamily.sMum            = sMum;
@@ -184,15 +131,7 @@ namespace NordicArts {
             }
 
             void People::generate() {
-                NordicEngine::Markov oMarkov;
-                oMarkov.setNamesList("GameFiles/Proc/Names/names-list");
-
-                // Generate the list of chances
-                oMarkov.generate();
-
-                // Generate last name
-                NordicEngine::NameGen oNameGen(m_iSeed);
-                oNameGen.generateLists();
+                Names oNames;
 
                 std::string cStatus = "Generating Families";
                 printIt(cStatus);
@@ -206,7 +145,7 @@ namespace NordicArts {
                     int iRandLength = NordicEngine::getRandom(3, 6, m_iSeed);
                     iFamilySize = NordicEngine::getRandom(2, (int)(m_sSettlement.iPeople / iFamilys), m_iSeed);
 
-                    std::string cLastName = oNameGen.generateName(iRandLength);
+                    std::string cLastName = oNames.getLastName(m_iSeed);
                     cStatus = ("Generating the " + cLastName + " Family");
                     printIt(cStatus);
 
@@ -215,9 +154,17 @@ namespace NordicArts {
 
                     for (int j = 0; j != iFamilySize; j++) {
                         setMinAge(0);
-                        if (j == 0) { setMinAge(21); } // need at least 1 adult 
+                        Person sPerson;
 
-                        Person sPerson      = getPerson(cLastName, oMarkov.generateWord());
+                        if (j == 0) { 
+                            setMinAge(21); 
+                            sPerson = getPerson(cLastName, true);
+                        } else if (j == 1) {
+                            sPerson = getPerson(cLastName, false);
+                        } else {
+                            sPerson = getPerson(cLastName);
+                        }
+
                         m_vPeople.push_back(sPerson);
                         vPeople.push_back(sPerson);
                     }
@@ -241,14 +188,6 @@ namespace NordicArts {
                 cStatus = "Generating Loners";
                 printIt(cStatus);
 
-                printIt(m_vFamilies.size());
-                for (size_t i = 0; i != m_vFamilies.size(); i++) {
-                    printIt(m_vFamilies.at(i).vGrandParents.size());
-                    printIt(m_vFamilies.at(i).vChildren.size());
-                    printIt(m_vFamilies.at(i).sDad.cFirstName);
-                    printIt(m_vFamilies.at(i).sMum.cFirstName);
-                }
-
                 // People not in a family
                 int iHomeless = (iTotalPeople - (m_sSettlement.iHouses - iHousesTaken));
                 bool bHomeless = false;
@@ -258,11 +197,10 @@ namespace NordicArts {
                     bHomeless = false;
                     if (iHomeless >= 1) { bHomeless = true; }
 
-                    std::string cLastName   = oNameGen.generateName(iRandLength);
-                    std::string cFirstName  = oMarkov.generateWord();
+                    std::string cLastName   = oNames.getLastName(m_iSeed);
 
                     setHomeless(bHomeless);
-                    Person sPerson      = getPerson(cLastName, cFirstName);
+                    Person sPerson      = getPerson(cLastName);
                     iHomeless           = (iHomeless - 1);
 
                     m_vPeople.push_back(sPerson);

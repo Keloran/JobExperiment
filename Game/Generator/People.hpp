@@ -27,8 +27,8 @@ namespace NordicArts {
                 People(Settlement sSettlement, int iSeed);
                 ~People();
 
-                Person getPerson(std::string cLastName, std::string cFirstName);
-                Person getPerson(std::string cLastName, std::string cFirstName, bool bMale);
+                Person getPerson(std::string cLastName);
+                Person getPerson(std::string cLastName, bool bMale);
                 
                 std::vector<Person> getPeople();                
 

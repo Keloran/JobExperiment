@@ -32,9 +32,13 @@ namespace NordicArts {
                     NordicEngine::Seeder oSeeder;
                     NordicEngine::Seeder *pSeeder = &oSeeder;
 
+                    //std::string cSeed = pSeeder->generateSeed();
                     std::string cSeed = "bobs experiment";
+                    printIt(cSeed);
                     pSeeder->setSeed(cSeed);
                     int iSeed = pSeeder->getSeed();
+                    iSeed = 256;
+                    printIt(NordicEngine::getString(iSeed));
 
                     Generators::Settlements oSettlements(3, iSeed);
                     oSettlements.generate();

@@ -58,6 +58,10 @@ list(APPEND LibSources ${GP}/Generator/Settlements.cpp)
 list(APPEND LibHeaders ${GP}/Generator/People.hpp)
 list(APPEND LibSources ${GP}/Generator/People.cpp)
 
+# Names
+list(APPEND LibHeaders ${GP}/Generator/Names.hpp)
+list(APPEND LibSources ${GP}/Generator/Names.cpp)
+
 # Game Start
 #include_directories(${GP}/GameStart)
 #link_directories(${GP}/GameStart)
