@@ -5,23 +5,23 @@ namespace NordicArts {
     namespace Game {
         namespace Generators {
             struct Job {
-                int iMinAge;
-                int iMaxAge;
-                int iMaxDistance;
+                int iMinAge			= 0;
+                int iMaxAge			= 0;
+                int iMaxDistance	= 0;
     
                 std::string cJobName;
                 std::string cParentJob;
 
-                bool bHouseNeeded;
-                bool bShopNeeded;
+                bool bHouseNeeded	= false;
+                bool bShopNeeded	= false;
             };
 
             struct Person {
-                int iAge;
-                int iMaxAge;
+                int iAge		= 0;
+                int iMaxAge		= 0;
                 
-                bool bMale;
-                bool bHomeless;
+                bool bMale		= false;
+                bool bHomeless	= false;
 
                 Job sJob;
                 
@@ -30,10 +30,13 @@ namespace NordicArts {
             };
 
             struct Family {
-                std::string cLastName;
+                std::string cFamilyName;
                 
                 Person sDad;
                 Person sMum;
+
+				int iMales		= 0;
+				int iFemales	= 0;
                 
                 std::vector<Person> vGrandParents;
                 std::vector<Person> vChildren;
@@ -42,12 +45,12 @@ namespace NordicArts {
             struct Settlement {
                 std::string cName;
                 
-                int iSize;
-                int iHouses;
-                int iShops;
-                int iPeople;
+                int iSize		= 0;
+                int iHouses		= 0;
+                int iShops		= 0;
+                int iPeople		= 0;
 
-                bool bMayorAppointed; 
+                bool bMayorAppointed	 = false; 
 
                 std::vector<Person> vPeople;
             };

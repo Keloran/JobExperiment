@@ -31,10 +31,9 @@ namespace NordicArts {
                 } else {
                     iMaxAge = NordicEngine::getRandom((iAge + 1), 99, m_iSeed);
                 }
-                int iSex    = NordicEngine::getRandom(0, 1, m_iSeed);
-
+                int iSex	= NordicEngine::getRandom(0, 100, m_iSeed);
                 bool bMale = false;
-                if (iSex == 1) { bMale = true; }
+                if (iSex >= 51) { bMale = true; }
 
                 Person sPerson;
 
@@ -57,19 +56,55 @@ namespace NordicArts {
 
             void People::personInfo(Person sPerson) {
                 std::string cStatus = "Generated ";
-                cStatus += (sPerson.sJob.cJobName + " ");
+                cStatus += sPerson.sJob.cJobName;
 
                 if (sPerson.sJob.cParentJob != "") {
-                    cStatus += (sPerson.sJob.cParentJob + " ");
-                }
+                    cStatus += (" " + sPerson.sJob.cParentJob + ", ");
+                } else {
+					cStatus += ", ";
+				}
 
-                cStatus += (NordicEngine::getString(sPerson.iAge) + "year old ");
+				if (sPerson.iAge >= 2) {
+	                cStatus += (NordicEngine::getString(sPerson.iAge) + " years old, ");
+				} else {
+					cStatus += (NordicEngine::getString(sPerson.iAge) + " year old, ");
+				}
 
                 cStatus += (sPerson.cFirstName + " ");
-                cStatus += (sPerson.cLastName + " ");
+                cStatus += (sPerson.cLastName + ", ");
+				if (sPerson.bMale) {
+					cStatus += "Male, ";
+				} else {
+					cStatus += "Female, ";
+				}
 
-                printIt(cStatus);
+				printIt(cStatus);
             }
+
+			void People::familyInfo(Family sFamily) {
+				std::string cStatus = "Generated the ";
+				cStatus += (sFamily.cFamilyName + " family, ");
+				cStatus += (NordicEngine::getString(sFamily.iMales) + " males, ");
+				cStatus += (NordicEngine::getString(sFamily.iFemales) + " females, ");
+				cStatus += ("Dad " + sFamily.sDad.cFirstName + ", ");
+				cStatus += ("Mum " + sFamily.sMum.cFirstName + ", ");
+
+				int iChildren = sFamily.vChildren.size();
+				if (iChildren >= 2) {
+					cStatus += (NordicEngine::getString(iChildren) + " children, ");
+				} else {
+					cStatus += (NordicEngine::getString(iChildren) + " child, ");
+				}
+
+				int iGrandParents = sFamily.vGrandParents.size();
+				if (iGrandParents >= 2) {
+					cStatus += (NordicEngine::getString(iGrandParents) + " grandparents, ");
+				} else {
+					cStatus += (NordicEngine::getString(iGrandParents) + " grandparent, ");
+				}
+
+				printIt(cStatus);
+			}
 
             std::vector<Person> People::getPeople() {
                 generate();
@@ -84,16 +119,15 @@ namespace NordicArts {
                 Person sMum;
                 std::vector<Person> vGrandParents;
                 std::vector<Person> vChildren;
+
+				int iMales 		= 0;
+				int iFemales	= 0;
                 
                 for (size_t i = 0; i != vPeople.size(); i++) {
                     Person sPerson = vPeople.at(i);
-
-                    std::string cInfo = "Person Info: ";
-                    cInfo += ("Male: " + NordicEngine::getString(sPerson.bMale));
-                    cInfo += (", Age: " + NordicEngine::getString(sPerson.iAge));
-                    printIt(cInfo);
-                    
                     if (sPerson.bMale) {
+						iMales += 1;
+
                         if (sDad.cFirstName == "") {
                             sDad = sPerson;
                         } else {
@@ -105,6 +139,8 @@ namespace NordicArts {
                             }
                         }
                     } else {
+						iFemales += 1;
+
                         if (sMum.cFirstName == "") {
                             sMum = sPerson;
                         } else {
@@ -118,11 +154,13 @@ namespace NordicArts {
                     }
                 }
 
-                sFamily.cLastName       = cLastName;
+                sFamily.cFamilyName     = cLastName;
                 sFamily.sDad            = sDad;
                 sFamily.sMum            = sMum;
                 sFamily.vGrandParents   = vGrandParents;
                 sFamily.vChildren       = vChildren;
+				sFamily.iMales			= iMales;
+				sFamily.iFemales		= iFemales;
 
                 return sFamily;
             }
@@ -151,8 +189,6 @@ namespace NordicArts {
                     iFamilySize = NordicEngine::getRandom(2, (int)(m_sSettlement.iPeople / iFamilys), m_iSeed);
 
                     std::string cLastName = oNameGen.generateName(iRandLength);
-                    cStatus = ("Generating the " + cLastName + " Family");
-                    printIt(cStatus);
 
                     // Temp Family
                     std::vector<Person> vPeople;
@@ -168,12 +204,9 @@ namespace NordicArts {
 
                     // Actual Family
                     Family sFamily = makeFamily(cLastName, vPeople);
-                    printIt(sFamily.sMum.cFirstName);
-                    printIt(sFamily.sDad.cFirstName);
+					familyInfo(sFamily);
 
                     m_vFamilies.push_back(sFamily);
-                    cStatus = ("Generated the " + cLastName + " Family");
-                    printIt(cStatus);
 
                     iTotalPeople = (iTotalPeople - iFamilySize);
                     if (iTotalPeople <= 0) { break; };
@@ -184,14 +217,6 @@ namespace NordicArts {
 
                 cStatus = "Generating Loners";
                 printIt(cStatus);
-
-                printIt(m_vFamilies.size());
-                for (size_t i = 0; i != m_vFamilies.size(); i++) {
-                    printIt(m_vFamilies.at(i).vGrandParents.size());
-                    printIt(m_vFamilies.at(i).vChildren.size());
-                    printIt(m_vFamilies.at(i).sDad.cFirstName);
-                    printIt(m_vFamilies.at(i).sMum.cFirstName);
-                }
 
                 // People not in a family
                 int iHomeless = (iTotalPeople - (m_sSettlement.iHouses - iHousesTaken));

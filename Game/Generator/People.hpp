@@ -15,8 +15,6 @@ namespace NordicArts {
                 Settlement m_sSettlement;
 
                 int m_iSeed;
-                int m_iPeople;
-                int m_iHouses;
                 int m_iMinAge = 0;
 
                 bool m_bHomeless = false;
@@ -38,6 +36,8 @@ namespace NordicArts {
             protected:
             private:
                 void personInfo(Person sPerson);
+				void familyInfo(Family sFamily);
+
                 void setMinAge(int iMinAge);
                 void setHomeless(bool bHomeless);
 

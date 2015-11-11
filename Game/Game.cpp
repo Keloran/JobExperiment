@@ -7,6 +7,7 @@
 #include <NordicEngine/String/String.hpp>
 
 #include <Game/Generator/Settlements.hpp>
+#include <Game/Generator/FamilyTree.hpp>
 
 namespace NordicArts {
     namespace Game {
@@ -40,7 +41,7 @@ namespace NordicArts {
                     oSettlements.generate();
                     
                     std::vector<Generators::Settlement> vSettlements = oSettlements.getSettlements();
-                    int iSettlements, iPeople, iHomeless;
+                    int iSettlements = 0, iPeople = 0, iHomeless = 0;
                     iSettlements = vSettlements.size();
 
                     for (size_t i = 0; i != iSettlements; i++) {
@@ -55,6 +56,9 @@ namespace NordicArts {
                     printIt(iSettlements);
                     printIt(iPeople);
                     printIt(iHomeless);
+
+					Generators::FamilyTree oFamilyTree(6, 1, iSeed);
+					oFamilyTree.generate();
 
                 } catch (std::exception &oException) {
                     throw NordicEngine::Exception(oException.what());
