@@ -1,6 +1,7 @@
 #include <Game/Generator/FamilyTree.hpp>
+#include <Game/Generator/Families.hpp>
 
-#include <Game/Generator/Family.hpp>
+#include <NordicEngine/Engine.hpp>
 
 namespace NordicArts {
 	namespace Game {
@@ -12,13 +13,16 @@ namespace NordicArts {
 			}
 
 			void FamilyTree::generate() {
-				std::vector<Family> vStartFamilies;
+				std::vector<NewFamily> vStartFamilies;
 
 				for (int i = 0; i != m_iStartFamilies; i++) {
-					Family oFamily;
-					oFamily.generate(m_iSeed);
+					Families oFamilies(m_iSeed);
+					NewFamily sFamily = oFamilies.generate();
 
-					vStartFamilies.push_back(oFamily);
+                    printIt(sFamily.cName);
+
+
+					vStartFamilies.push_back(sFamily);
 				}
 			}
 		};

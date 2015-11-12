@@ -19,7 +19,9 @@ namespace NordicArts {
 				Families(int iSeed);
 				~Families();
 
-				Family generate();
+				NewFamily generate();
+                NewFamily generate(int iMales, int iFemales);
+                NewFamily generate(int iMales, int iFemales, NewPerson *sDad, NewPerson *sMum);
 
 			protected:
 			private:

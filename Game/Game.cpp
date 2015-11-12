@@ -37,6 +37,7 @@ namespace NordicArts {
                     pSeeder->setSeed(cSeed);
                     int iSeed = pSeeder->getSeed();
 
+                    /*
                     Generators::Settlements oSettlements(3, iSeed);
                     oSettlements.generate();
                     
@@ -56,6 +57,7 @@ namespace NordicArts {
                     printIt(iSettlements);
                     printIt(iPeople);
                     printIt(iHomeless);
+                     */
 
 					Generators::FamilyTree oFamilyTree(6, 1, iSeed);
 					oFamilyTree.generate();
